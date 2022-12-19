@@ -60,3 +60,14 @@ refs/remotes/origin/walmart-dev-mss
 ######slack
 https://slack.com  
 ###update
+### audit trail logs ################
+[root@mss-jenkins jenkins]# ls
+audit_trails.log.0
+
+Dec 19, 2022 5:10:39,644 PMFreestyle_projects » Maven_Folder » wallmart-dev-mss #12 Started by GitHub push by democalculus, Parameters:[] on node Jenkins started at 2022-12-19T17:10:08Z completed in 30917ms completed: SUCCESS
+Dec 19, 2022 5:10:42,299 PM'Freestyle_projects/Maven_Folder/wallmart-qa-mss' (class hudson.model.FreeStyleProject) used credentials 'democalculus-Tom-box_creds_ID' (class com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImpl).
+Dec 19, 2022 5:10:43,974 PMFreestyle_projects » Maven_Folder » wallmart-qa-mss #4 Started by GitHub push by democalculus, Parameters:[] on node Jenkins started at 2022-12-19T17:10:13Z completed in 30338ms completed: SUCCESS
+
+
+#####SonarQube
+#squ_1bd82d92f55afca8d9fff16fdb00ec42f786bd39
