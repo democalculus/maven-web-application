@@ -18,3 +18,23 @@
   </servers>
 
   <!-- mirrors
+##################poll scm trigger by change in commit ID##########
+Build #5 (Dec 19, 2022, 11:08:06 AM)
+Add description
+Changes
+push (details / githubweb)
+Started by an SCM change
+
+	Revision: 05e7d9b25bb5202def325e884c64c7d253d08f9c
+Repository: https://github.com/democalculus/maven-web-application.git
+refs/remotes/origin/walmart-dev-mss
+
+##################BUILD periodically this everything you have schedule build will trigger periodically###
+Build #6 (Dec 19, 2022, 11:11:00 AM)
+Add description
+No changes.
+Started by timer
+
+	Revision: 05e7d9b25bb5202def325e884c64c7d253d08f9c
+Repository: https://github.com/democalculus/maven-web-application.git
+refs/remotes/origin/walmart-dev-mss
