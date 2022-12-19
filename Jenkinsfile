@@ -31,7 +31,7 @@ node {
         artifacts: [
             [artifactId: 'maven-web-app',
              classifier: '',
-             file: 'target/maven-web-app.war]',
+             file: 'walmart-dev-mss/target/maven-web-app.war]',
              type: 'war']
         ]
      )
