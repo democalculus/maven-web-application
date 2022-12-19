@@ -41,6 +41,6 @@ Repository: https://github.com/democalculus/maven-web-application.git
 refs/remotes/origin/walmart-dev-mss
 
 
-#add webhook
+#add webhook update
 
 http://34.125.180.153:8080/github-webhook/
