@@ -1,7 +1,7 @@
 # maven-web-application
 #walmart-dev-mss branch added   Dec_91_22
 #configure nexus details in jenkins
-#contextPath
+#Path
 #/var/lib/jenkins/tools/hudson.tasks.Maven_MavenInstallation/demo-maven_3.8.6/conf
 <server>
       <id>deploymentRepo</id>
