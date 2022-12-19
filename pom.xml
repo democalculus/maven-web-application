@@ -21,7 +21,7 @@
 		<spring.version>5.1.2.RELEASE</spring.version>
 		<junit.version>4.11</junit.version>
 		<log4j.version>1.2.17</log4j.version>
-		<sonar.host.url>http://34.125.45.196:9000/</sonar.host.url>
+		<sonar.host.url>http://10.182.0.4:9000/</sonar.host.url>
     <sonar.login>squ_e5259d0edd59485b2b3054bd5307ebc12caf978e</sonar.login>
     <sonar.organization>eagunu-mss-demo</sonar.organization>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
