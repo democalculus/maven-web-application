@@ -30,6 +30,7 @@ Repository: https://github.com/democalculus/maven-web-application.git
 refs/remotes/origin/walmart-dev-mss
 
 ##################BUILD periodically this everything you have schedule build will trigger periodically###
+#this is used for ongoing development
 Build #6 (Dec 19, 2022, 11:11:00 AM)
 Add description
 No changes.
@@ -38,3 +39,8 @@ Started by timer
 	Revision: 05e7d9b25bb5202def325e884c64c7d253d08f9c
 Repository: https://github.com/democalculus/maven-web-application.git
 refs/remotes/origin/walmart-dev-mss
+
+
+#add webhook
+
+http://34.125.180.153:8080/github-webhook/
