@@ -16,10 +16,9 @@ node {
    }
 
    stage ('Code coverage')  {
-       jacoco()
-   }
+          jacoco()
+       }
 
-    }
    stage ('Nexus upload')  {
         nexusArtifactUploader(
         nexusVersion: 'nexus3',
@@ -37,7 +36,7 @@ node {
         ]
      )
     }
-
+}
 //    stage ('DEV Deploy')  {
 //       echo "deploying to DEV Env "
 //       deploy adapters: [tomcat9(credentialsId: '4c55fae1-a02d-4b82-ba34-d262176eeb46', path: '', url: 'http://your_tomcat_url:8080')], contextPath: null, war: '**/*.war'
@@ -77,5 +76,5 @@ node {
 //      echo "deploying into PROD Env "
 // deploy adapters: [tomcat9(credentialsId: '4c55fae1-a02d-4b82-ba34-d262176eeb46', path: '', url: 'http://your_tomcat_url:8080')], contextPath: null, war: '**/*.war'
 //
+ // }
 // }
-}
