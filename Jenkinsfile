@@ -23,7 +23,7 @@ node {
         nexusVersion: 'nexus3',
         protocol: 'http',
         nexusUrl: '34.125.253.100:8081',
-        groupId: 'Dev',
+        groupId: 'custom-pom',
         version: '1.0-SNAPSHOT',
         repository: 'demo-walmart-snapshop',
         credentialsId: 'nexus_creds_id',
