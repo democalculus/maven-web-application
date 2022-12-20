@@ -110,7 +110,13 @@ node {
 //
 //     }
 //
-  stage ('Slack notification')  {
+
+stage ('DEV Deploy')  {
+      echo "Deploying To Custom MPM Env "
+     deploy adapters: [tomcat9(credentialsId: 'democalculus-Tom-box_creds_ID', path: '', url: 'http://34.125.253.100:8080/')], contextPath: '/custom-pom-mpm', war: '**/*.war'
+    }
+
+stage ('Slack notification')  {
     slackSend(channel:'multibranch_notification', message: "Job is successful, here is the info -  Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
    }
 
