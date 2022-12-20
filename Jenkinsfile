@@ -49,7 +49,7 @@ pipeline{
 
      stage('Build maven packages '){
               steps{
-                    sh "mvn clean package"
+                    sh "mvn install -f maven-web-app/pom.xml"
                       }
                   }
 
