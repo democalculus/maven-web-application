@@ -55,9 +55,9 @@ pipeline{
     stage ('Code Quality scan')  {
                 steps {
                     withSonarQubeEnv('sonar_creds') {
-                      sh "${mvnHome}/bin/mvn -f maven-web-app/pom.xml sonar:sonar"
+                      sh "mvn -f maven-web-app/pom.xml sonar:sonar"
                        }
-                  } 
+                  }
                 }
 
  //      stage('Building Docker Images') {
