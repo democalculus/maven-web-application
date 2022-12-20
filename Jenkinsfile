@@ -5,7 +5,7 @@ node {
   environment {
             DEPLOY = "${env.BRANCH_NAME == "python-dramed" || env.BRANCH_NAME == "master" ? "true" : "false"}"
             NAME = "${env.BRANCH_NAME == "python-dramed" ? "example" : "example-staging"}"
-            def mavenHome =  tool name: "demo-maven:3.8.6", type: "maven"
+            def mvnHome =  tool name: "demo-maven:3.8.6", type: "maven"
             //def mavenCMD = "${mavenHome}/usr/share/maven"
             VERSION = "${env.BUILD_ID}"
             BUILD_NUMBER = "${env.BUILD_NUMBER}"
