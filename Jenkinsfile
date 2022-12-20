@@ -15,8 +15,9 @@ node {
         }
    }
 
-   stage ('Code coverage')  {
-          jacoco()
+   stage ('Code coverage always successful')  {
+          //jacoco()
+          jacoco deltaBranchCoverage: '80', deltaClassCoverage: '80', deltaComplexityCoverage: '80', deltaInstructionCoverage: '80', deltaLineCoverage: '80', deltaMethodCoverage: '80', maximumBranchCoverage: '80', maximumClassCoverage: '80', maximumComplexityCoverage: '80', maximumInstructionCoverage: '80', maximumLineCoverage: '80', maximumMethodCoverage: '80', minimumBranchCoverage: '80', minimumClassCoverage: '80', minimumComplexityCoverage: '80', minimumInstructionCoverage: '80', minimumLineCoverage: '80', minimumMethodCoverage: '80'
        }
    stage ('Nexus upload')  {
         nexusArtifactUploader(
