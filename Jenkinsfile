@@ -18,24 +18,26 @@ node {
    stage ('Code coverage')  {
           jacoco()
        }
-
-   stage ('Nexus upload')  {
-        nexusArtifactUploader(
-        nexusVersion: 'nexus3',
-        protocol: 'http',
-        nexusUrl: 'http://34.125.253.100:8081',
-        groupId: 'com.mt',
-        version: '1.0-SNAPSHOT',
-        repository: 'eagunu-mvn-snapshot-mss',
-        credentialsId: 'nexus_creds_id',
-        artifacts: [
-            [artifactId: 'maven-web-app',
-             classifier: '',
-             file: 'Dashboard/maven project/walmart-dev-mss/target/maven-web-app.war',
-             type: 'war']
-        ]
-     )
-    }
+   stage('uploadNexus') {
+      nexusArtifactUploader artifacts: [[artifactId: 'maven-web-app', classifier: '', file: 'walmart-dev-mss/target/maven-web-app.war', type: 'war']], credentialsId: 'nexus_creds_id', groupId: 'com.mt', nexusUrl: '34.125.253.100:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'eagunu-mvn-snapshot-mss', version: '0.0.1-SNAPSHOT'
+     }
+   // stage ('Nexus upload')  {
+   //      nexusArtifactUploader(
+   //      nexusVersion: 'nexus3',
+   //      protocol: 'http',
+   //      nexusUrl: 'http://34.125.253.100:8081',
+   //      groupId: 'com.mt',
+   //      version: '1.0-SNAPSHOT',
+   //      repository: 'eagunu-mvn-snapshot-mss',
+   //      credentialsId: 'nexus_creds_id',
+   //      artifacts: [
+   //          [artifactId: 'maven-web-app',
+   //           classifier: '',
+   //           file: 'Dashboard/maven project/walmart-dev-mss/target/maven-web-app.war',
+   //           type: 'war']
+   //      ]
+   //   )
+   //  }
 }
 //    stage ('DEV Deploy')  {
 //       echo "deploying to DEV Env "
