@@ -37,7 +37,7 @@ pipeline{
       //           }
       stage('checking... maven version ') {
           steps {
-                  sh "mvn --version"
+            sh "git branch: 'walmart-development-mss', credentialsId: 'democalculus_github_creds_ID', url: 'https://github.com/democalculus/maven-web-application.git'"
                    }
                 }
 
@@ -88,12 +88,12 @@ pipeline{
   stage('Building Docker Images') {
           steps {
               sh "sudo chmod 666 /var/run/docker.sock"
-              sh "docker build -t demo ."
+              sh "docker build -t ${REGISTRY}:${VERSION} ."
                   }
               }
 
  //    stage('Push Docker Image To DockerHub') {
- //    ${REGISTRY}:${VERSION}          steps {
+ //          steps {
  //                   withCredentials([string(credentialsId: 'eagunuworld_dockerhub_creds', variable: 'eagunuworld_dockerhub_creds')])  {
  //                   sh "docker login -u eagunuworld -p ${eagunuworld_dockerhub_creds} "
  //                   }
