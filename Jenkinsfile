@@ -37,7 +37,7 @@ pipeline{
       //           }
       stage('checking... maven version ') {
           steps {
-            sh "git branch: 'walmart-development-mss', credentialsId: 'democalculus_github_creds_ID', url: 'https://github.com/democalculus/maven-web-application.git'"
+            git branch: 'walmart-development-mss', credentialsId: 'democalculus_github_creds_ID', url: 'https://github.com/democalculus/maven-web-application.git'
                    }
                 }
 
