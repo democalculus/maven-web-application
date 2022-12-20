@@ -1,6 +1,19 @@
 node {
 
-    def mvnHome = tool name: "demo-maven:3.8.6"
+    //def mvnHome = tool name: "demo-maven:3.8.6"
+
+  environment {
+            DEPLOY = "${env.BRANCH_NAME == "python-dramed" || env.BRANCH_NAME == "master" ? "true" : "false"}"
+            NAME = "${env.BRANCH_NAME == "python-dramed" ? "example" : "example-staging"}"
+            def mavenHome =  tool name: "demo-maven:3.8.6", type: "maven"
+            //def mavenCMD = "${mavenHome}/usr/share/maven"
+            VERSION = "${env.BUILD_ID}"
+            BUILD_NUMBER = "${env.BUILD_NUMBER}"
+            BRANCH_NAME = "${env.BRANCH_NAME}"
+            NODE_NAME = "${env.NODE_NAME}"
+            REGISTRY = 'eagunuworld/mongodb-springboot-app'
+            REGISTRY_CREDENTIAL = 'eagunuworld_dockerhub_creds'
+          }
 
     properties([buildDiscarder(logRotator(
              artifactDaysToKeepStr: '1',
@@ -10,6 +23,7 @@ node {
              [$class: 'JobLocalConfiguration',
              changeReasonComment: ''],
              pipelineTriggers([githubPush()])])
+
     stage ("checkout")  {
        checkout([$class: 'GitSCM', branches: [[name: '*/custom-pom-mpm']], extensions: [], userRemoteConfigs: [[credentialsId: 'democalculus_github_creds_ID', url: 'https://github.com/democalculus/maven-web-application.git']]])
     }
