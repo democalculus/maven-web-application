@@ -35,17 +35,16 @@ node {
         ]
      )
     }
-}
 //    stage ('DEV Deploy')  {
 //       echo "deploying to DEV Env "
 //       deploy adapters: [tomcat9(credentialsId: '4c55fae1-a02d-4b82-ba34-d262176eeb46', path: '', url: 'http://your_tomcat_url:8080')], contextPath: null, war: '**/*.war'
 //
 //     }
 //
-//   stage ('Slack notification')  {
-//     slackSend(channel:'channel-name', message: "Job is successful, here is the info -  Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
-//    }
-//
+  stage ('Slack notification')  {
+    slackSend(channel:'channel-name', message: "Job is successful, here is the info -  Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+   }
+
 //    stage ('DEV Approve')  {
 //             echo "Taking approval from DEV Manager for QA Deployment"
 //             timeout(time: 7, unit: 'DAYS') {
@@ -76,4 +75,4 @@ node {
 // deploy adapters: [tomcat9(credentialsId: '4c55fae1-a02d-4b82-ba34-d262176eeb46', path: '', url: 'http://your_tomcat_url:8080')], contextPath: null, war: '**/*.war'
 //
  // }
-// }
+}
