@@ -42,7 +42,7 @@ node {
 //     }
 //
   stage ('Slack notification')  {
-    slackSend(channel:'channel-name', message: "Job is successful, here is the info -  Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+    slackSend(channel:'multibranch_notification', message: "Job is successful, here is the info -  Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
    }
 
 //    stage ('DEV Approve')  {
