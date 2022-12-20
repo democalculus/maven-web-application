@@ -23,7 +23,7 @@ node {
         nexusArtifactUploader(
         nexusVersion: 'nexus3',
         protocol: 'http',
-        nexusUrl: '34.125.253.100:8081',
+        nexusUrl: '10.182.0.3:8081',
         groupId: 'custom-pom',
         version: '1.0-SNAPSHOT',
         repository: 'demo-walmart-snapshop',
@@ -37,7 +37,27 @@ node {
      )
     }
 stage ('Code coverage always successful')  {
-        jacoco(buildOverBuild: true, changeBuildStatus: true, deltaBranchCoverage: '80', deltaClassCoverage: '80', deltaComplexityCoverage: '80', deltaInstructionCoverage: '80', deltaLineCoverage: '80', deltaMethodCoverage: '80', maximumBranchCoverage: '80', maximumClassCoverage: '80', maximumComplexityCoverage: '80', maximumInstructionCoverage: '80', maximumLineCoverage: '80', maximumMethodCoverage: '80', minimumBranchCoverage: '80', minimumClassCoverage: '80',            minimumComplexityCoverage: '80', minimumInstructionCoverage: '80', minimumLineCoverage: '80', minimumMethodCoverage: '80'
+        jacoco(
+          buildOverBuild: true,
+          changeBuildStatus: true,
+          deltaBranchCoverage: '80',
+          deltaClassCoverage: '80',
+          deltaComplexityCoverage: '80',
+          deltaInstructionCoverage: '80',
+          deltaLineCoverage: '80',
+          deltaMethodCoverage: '80',
+          maximumBranchCoverage: '80',
+          maximumClassCoverage: '80',
+          maximumComplexityCoverage: '80',
+          maximumInstructionCoverage: '80',
+          maximumLineCoverage: '80',
+          maximumMethodCoverage: '80',
+          minimumBranchCoverage: '80',
+          minimumClassCoverage: '80',
+          minimumComplexityCoverage: '80',
+          minimumInstructionCoverage: '80',
+          minimumLineCoverage: '80',
+          minimumMethodCoverage: '80'
          )
         }
 //    stage ('DEV Deploy')  {
