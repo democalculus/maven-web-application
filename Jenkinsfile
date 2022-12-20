@@ -1,6 +1,15 @@
 node {
 
     def mvnHome = tool name: "demo-maven:3.8.6"
+
+    options {
+        buildDiscarder logRotator(
+             artifactDaysToKeepStr: '1',
+             artifactNumToKeepStr: '2',
+             daysToKeepStr: '1',
+             numToKeepStr: '2')
+             timestamps
+          }
     stage ("checkout")  {
        checkout([$class: 'GitSCM', branches: [[name: '*/custom-pom-mpm']], extensions: [], userRemoteConfigs: [[credentialsId: 'democalculus_github_creds_ID', url: 'https://github.com/democalculus/maven-web-application.git']]])
     }
@@ -15,10 +24,28 @@ node {
         }
    }
 
-   stage ('Code coverage always successful')  {
-          //jacoco()
-          jacoco deltaBranchCoverage: '80', deltaClassCoverage: '80', deltaComplexityCoverage: '80', deltaInstructionCoverage: '80', deltaLineCoverage: '80', deltaMethodCoverage: '80', maximumBranchCoverage: '80', maximumClassCoverage: '80', maximumComplexityCoverage: '80', maximumInstructionCoverage: '80', maximumLineCoverage: '80', maximumMethodCoverage: '80', minimumBranchCoverage: '80', minimumClassCoverage: '80', minimumComplexityCoverage: '80', minimumInstructionCoverage: '80', minimumLineCoverage: '80', minimumMethodCoverage: '80'
-       }
+   stage ('Code coverage failed without build marked')  {
+          jacoco(
+            deltaBranchCoverage: '80',
+            deltaClassCoverage: '80',
+            deltaComplexityCoverage: '80',
+            deltaInstructionCoverage: '80',
+            deltaLineCoverage: '80',
+            deltaMethodCoverage: '80',
+            maximumBranchCoverage: '80',
+            maximumClassCoverage: '80',
+            maximumComplexityCoverage: '80',
+            maximumInstructionCoverage: '80',
+            maximumLineCoverage: '80',
+            maximumMethodCoverage: '80',
+            minimumBranchCoverage: '80',
+            minimumClassCoverage: '80',
+            minimumComplexityCoverage: '80',
+            minimumInstructionCoverage: '80',
+            minimumLineCoverage: '80',
+            minimumMethodCoverage: '80'
+             )
+           }
    stage ('Nexus upload')  {
         nexusArtifactUploader(
         nexusVersion: 'nexus3',
@@ -36,30 +63,30 @@ node {
         ]
      )
     }
-stage ('Code coverage always successful')  {
-        jacoco(
-          buildOverBuild: true,
-          changeBuildStatus: true,
-          deltaBranchCoverage: '80',
-          deltaClassCoverage: '80',
-          deltaComplexityCoverage: '80',
-          deltaInstructionCoverage: '80',
-          deltaLineCoverage: '80',
-          deltaMethodCoverage: '80',
-          maximumBranchCoverage: '80',
-          maximumClassCoverage: '80',
-          maximumComplexityCoverage: '80',
-          maximumInstructionCoverage: '80',
-          maximumLineCoverage: '80',
-          maximumMethodCoverage: '80',
-          minimumBranchCoverage: '80',
-          minimumClassCoverage: '80',
-          minimumComplexityCoverage: '80',
-          minimumInstructionCoverage: '80',
-          minimumLineCoverage: '80',
-          minimumMethodCoverage: '80'
-         )
-        }
+// stage ('Code coverage failed with build checked marked')  {
+//         jacoco(
+//           buildOverBuild: true,
+//           changeBuildStatus: true,
+//           deltaBranchCoverage: '80',
+//           deltaClassCoverage: '80',
+//           deltaComplexityCoverage: '80',
+//           deltaInstructionCoverage: '80',
+//           deltaLineCoverage: '80',
+//           deltaMethodCoverage: '80',
+//           maximumBranchCoverage: '80',
+//           maximumClassCoverage: '80',
+//           maximumComplexityCoverage: '80',
+//           maximumInstructionCoverage: '80',
+//           maximumLineCoverage: '80',
+//           maximumMethodCoverage: '80',
+//           minimumBranchCoverage: '80',
+//           minimumClassCoverage: '80',
+//           minimumComplexityCoverage: '80',
+//           minimumInstructionCoverage: '80',
+//           minimumLineCoverage: '80',
+//           minimumMethodCoverage: '80'
+//          )
+//         }
 //    stage ('DEV Deploy')  {
 //       echo "deploying to DEV Env "
 //       deploy adapters: [tomcat9(credentialsId: '4c55fae1-a02d-4b82-ba34-d262176eeb46', path: '', url: 'http://your_tomcat_url:8080')], contextPath: null, war: '**/*.war'
