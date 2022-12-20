@@ -6,12 +6,12 @@ node {
     }
 
    stage ('build')  {
-    sh "${mvnHome}/bin/mvn  clean package"
+    sh "${mvnHome}/bin/mvn  clean install"
     }
 
      stage ('Code Quality scan')  {
        withSonarQubeEnv('sonar_creds') {
-       sh "${mvnHome}/bin/mvn clean package sonar:sonar"
+       sh "${mvnHome}/bin/mvn sonar:sonar"
         }
    }
 
