@@ -2,14 +2,14 @@ node {
 
     def mvnHome = tool name: "demo-maven:3.8.6"
 
-    options {
-        buildDiscarder logRotator(
+    properties([buildDiscarder(logRotator(
              artifactDaysToKeepStr: '1',
              artifactNumToKeepStr: '2',
              daysToKeepStr: '1',
-             numToKeepStr: '2')
-             timestamps()
-          }
+             numToKeepStr: '2')),
+             [$class: 'JobLocalConfiguration',
+             changeReasonComment: ''],
+             pipelineTriggers([githubPush()])])
     stage ("checkout")  {
        checkout([$class: 'GitSCM', branches: [[name: '*/custom-pom-mpm']], extensions: [], userRemoteConfigs: [[credentialsId: 'democalculus_github_creds_ID', url: 'https://github.com/democalculus/maven-web-application.git']]])
     }
