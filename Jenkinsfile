@@ -137,7 +137,7 @@ stage ('QA notification')  {
       }
 
 
-stage ('QA Approve')  {
+stage ('Prod Approve')  {
         echo "Taking approval from QA manager"
         timeout(time: 7, unit: 'DAYS') {
         input message: 'Do you want to proceed to PROD Deploy?', submitter: 'admin,manager_userid'
