@@ -30,7 +30,7 @@ node {
         artifacts: [
             [artifactId: 'maven-web-app',
              classifier: '',
-             file: '*/target/maven-web-app.war',
+             file: 'maven-web-app.war',
              type: 'war']
         ]
      )
