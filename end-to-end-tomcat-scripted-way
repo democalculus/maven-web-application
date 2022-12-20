@@ -32,7 +32,7 @@ node {
     }
 
    stage ('build')  {
-    sh "${mvnHome}/bin/mvn  clean install -f maven-web-app/pom.xml"
+    sh "${mvnHome}/bin/mvn install -f maven-web-app/pom.xml"
     }
 
      stage ('Code Quality scan')  {

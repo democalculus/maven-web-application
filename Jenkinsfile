@@ -16,7 +16,7 @@ pipeline{
     environment {
               DEPLOY = "${env.BRANCH_NAME == "python-dramed" || env.BRANCH_NAME == "master" ? "true" : "false"}"
               NAME = "${env.BRANCH_NAME == "python-dramed" ? "example" : "example-staging"}"
-              def mvnHome =  tool name: "demo-maven:3.8.6", type: "maven"
+              //def mvnHome =  tool name: "demo-maven:3.8.6", type: "maven"
               //def mavenCMD = "${mavenHome}/usr/share/maven"
               VERSION = "${env.BUILD_ID}"
               BUILD_NUMBER = "${env.BUILD_NUMBER}"
@@ -27,7 +27,6 @@ pipeline{
             }
 
     stages {
-
 
       // stage('Example') {
       //      if (env.BRANCH_NAME == 'python-dramed') {
@@ -52,6 +51,14 @@ pipeline{
                     sh "mvn install -f maven-web-app/pom.xml"
                       }
                   }
+
+    stage ('Code Quality scan')  {
+                steps {
+                    withSonarQubeEnv('sonar_creds') {
+                      sh "${mvnHome}/bin/mvn -f maven-web-app/pom.xml sonar:sonar"
+                       }
+                  } 
+                }
 
  //      stage('Building Docker Images') {
  //                steps {
