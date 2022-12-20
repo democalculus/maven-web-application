@@ -1,7 +1,10 @@
 node {
 
     def mvnHome = tool name: "demo-maven:3.8.6"
-
+    echo "pipeline build_ID is: ${env.BUILD_ID}"
+    echo "pipeline build_Number is: ${env.BUILD_NUMBER}"
+    echo "pipeline running node is: ${env.NODE_NAME}"
+    echo "pipeline branch name  is: ${env.BRANCH_NAME}"
   // environment { not working of scripted pipeline
   //           DEPLOY = "${env.BRANCH_NAME == "python-dramed" || env.BRANCH_NAME == "master" ? "true" : "false"}"
   //           NAME = "${env.BRANCH_NAME == "python-dramed" ? "example" : "example-staging"}"
