@@ -1,155 +1,137 @@
-node {
+pipeline{
+    agent any
 
-    def mvnHome = tool name: "demo-maven:3.8.6"
-    echo "pipeline build_ID is: ${env.BUILD_ID}"
-    echo "pipeline build_Number is: ${env.BUILD_NUMBER}"
-    echo "pipeline running node is: ${env.NODE_NAME}"
-    echo "pipeline branch name  is: ${env.BRANCH_NAME}"
-  // environment { not working of scripted pipeline
-  //           DEPLOY = "${env.BRANCH_NAME == "python-dramed" || env.BRANCH_NAME == "master" ? "true" : "false"}"
-  //           NAME = "${env.BRANCH_NAME == "python-dramed" ? "example" : "example-staging"}"
-  //           def mvnHome =  tool name: "demo-maven:3.8.6", type: "maven"
-  //           //def mavenCMD = "${mavenHome}/usr/share/maven"
-  //           VERSION = "${env.BUILD_ID}"
-  //           BUILD_NUMBER = "${env.BUILD_NUMBER}"
-  //           BRANCH_NAME = "${env.BRANCH_NAME}"
-  //           NODE_NAME = "${env.NODE_NAME}"
-  //           REGISTRY = 'eagunuworld/mongodb-springboot-app'
-  //           REGISTRY_CREDENTIAL = 'eagunuworld_dockerhub_creds'
-  //         }
-
-    properties([buildDiscarder(logRotator(
-             artifactDaysToKeepStr: '1',
-             artifactNumToKeepStr: '2',
-             daysToKeepStr: '1',
-             numToKeepStr: '2')),
-             [$class: 'JobLocalConfiguration',
-             changeReasonComment: ''],
-             pipelineTriggers([githubPush()])])
-
-    stage ("checkout")  {
-       checkout([$class: 'GitSCM', branches: [[name: '*/custom-pom-mpm']], extensions: [], userRemoteConfigs: [[credentialsId: 'democalculus_github_creds_ID', url: 'https://github.com/democalculus/maven-web-application.git']]])
-    }
-
-   stage ('build')  {
-    sh "${mvnHome}/bin/mvn  clean install -f maven-web-app/pom.xml"
-    }
-
-     stage ('Code Quality scan')  {
-       withSonarQubeEnv('sonar_creds') {
-       sh "${mvnHome}/bin/mvn -f maven-web-app/pom.xml sonar:sonar"
-        }
-   }
-
-   stage ('Code coverage failed without build marked')  {
-          jacoco(
-            deltaBranchCoverage: '80',
-            deltaClassCoverage: '80',
-            deltaComplexityCoverage: '80',
-            deltaInstructionCoverage: '80',
-            deltaLineCoverage: '80',
-            deltaMethodCoverage: '80',
-            maximumBranchCoverage: '80',
-            maximumClassCoverage: '80',
-            maximumComplexityCoverage: '80',
-            maximumInstructionCoverage: '80',
-            maximumLineCoverage: '80',
-            maximumMethodCoverage: '80',
-            minimumBranchCoverage: '80',
-            minimumClassCoverage: '80',
-            minimumComplexityCoverage: '80',
-            minimumInstructionCoverage: '80',
-            minimumLineCoverage: '80',
-            minimumMethodCoverage: '80'
-             )
-           }
-   stage ('Nexus upload')  {
-        nexusArtifactUploader(
-        nexusVersion: 'nexus3',
-        protocol: 'http',
-        nexusUrl: '10.182.0.3:8081',
-        groupId: 'custom-pom',
-        version: '1.0-SNAPSHOT',
-        repository: 'demo-walmart-snapshop',
-        credentialsId: 'nexus_creds_id',
-        artifacts: [
-            [artifactId: 'maven-web-app',
-             classifier: '',
-             file: 'maven-web-app/target/maven-web-app.war',
-             type: 'war']
-        ]
-     )
-    }
-// stage ('Code coverage failed with build checked marked')  {
-//         jacoco(
-//           buildOverBuild: true,
-//           changeBuildStatus: true,
-//           deltaBranchCoverage: '80',
-//           deltaClassCoverage: '80',
-//           deltaComplexityCoverage: '80',
-//           deltaInstructionCoverage: '80',
-//           deltaLineCoverage: '80',
-//           deltaMethodCoverage: '80',
-//           maximumBranchCoverage: '80',
-//           maximumClassCoverage: '80',
-//           maximumComplexityCoverage: '80',
-//           maximumInstructionCoverage: '80',
-//           maximumLineCoverage: '80',
-//           maximumMethodCoverage: '80',
-//           minimumBranchCoverage: '80',
-//           minimumClassCoverage: '80',
-//           minimumComplexityCoverage: '80',
-//           minimumInstructionCoverage: '80',
-//           minimumLineCoverage: '80',
-//           minimumMethodCoverage: '80'
-//          )
-//         }
-//    stage ('DEV Deploy')  {
-//       echo "deploying to DEV Env "
-//       deploy adapters: [tomcat9(credentialsId: '4c55fae1-a02d-4b82-ba34-d262176eeb46', path: '', url: 'http://your_tomcat_url:8080')], contextPath: null, war: '**/*.war'
-//
-//     }
-//
-
-stage ('DEV Deploy')  {
-      echo "Deploying To Custom MPM Env "
-     deploy adapters: [tomcat9(credentialsId: 'democalculus-Tom-box_creds_ID', path: '', url: 'http://34.125.253.100:8080/')], contextPath: '/dev-ployment', war: '**/*.war'
-    }
-
-stage ('Slack notification')  {
-    slackSend(channel:'dev-continuous-job', message: "Job is successful In Dev , here is the info -  Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
-   }
-
-   stage ('DEV Approve')  {
-            echo "Taking approval from DEV Manager for QA Deployment"
-            timeout(time: 7, unit: 'DAYS') {
-            input message: 'Do you approve QA Deployment?', submitter: 'admin'
-            }
-       }
-
-  stage ('QA Deploy')  {
-       echo "Deploying into QA Env "
-       deploy adapters: [tomcat9(credentialsId: 'democalculus-Tom-box_creds_ID', path: '', url: 'http://34.125.253.100:8080/')], contextPath: '/qa-ployment', war: '**/*.war'
-      }
-
-stage ('QA notification')  {
-          slackSend(channel:'qa-testing-validations', message: "Job is successful In Dev , here is the info -  Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
-      }
-
-
-stage ('Prod Approve')  {
-        echo "Taking approval from QA manager"
-        timeout(time: 7, unit: 'DAYS') {
-        input message: 'Do you want to proceed to PROD Deploy?', submitter: 'admin,manager_userid'
-       }
-    }
-
-stage ('PROD Deploy')  {
-       echo "deploying into PROD Env "
-       deploy adapters: [tomcat9(credentialsId: 'democalculus-Tom-box_creds_ID', path: '', url: 'http://34.125.253.100:8080/')], contextPath: '/prod-ployment', war: '**/*.war'
+    options {
+      buildDiscarder logRotator(artifactDaysToKeepStr: '1', artifactNumToKeepStr: '2', daysToKeepStr: '1', numToKeepStr: '2')
+      timestamps()
      }
 
-  stage ('prod notification')  {
-        slackSend(channel:'prod-deployment-success-test', message: "Job is successful In Dev , here is the info -  Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
-      }
+    // agent{
+    //     label "javaAgent"
+    //      }
+    //
+    // tools{
+    //      maven 'maven:3.6.3'
+    //       }
+    environment { not working of scripted pipeline
+              DEPLOY = "${env.BRANCH_NAME == "python-dramed" || env.BRANCH_NAME == "master" ? "true" : "false"}"
+              NAME = "${env.BRANCH_NAME == "python-dramed" ? "example" : "example-staging"}"
+              def mvnHome =  tool name: "demo-maven:3.8.6", type: "maven"
+              //def mavenCMD = "${mavenHome}/usr/share/maven"
+              VERSION = "${env.BUILD_ID}"
+              BUILD_NUMBER = "${env.BUILD_NUMBER}"
+              BRANCH_NAME = "${env.BRANCH_NAME}"
+              NODE_NAME = "${env.NODE_NAME}"
+              REGISTRY = 'eagunuworld/mongodb-springboot-app'
+              REGISTRY_CREDENTIAL = 'eagunuworld_dockerhub_creds'
+            }
+
+    stages {
+
+
+      // stage('Example') {
+      //      if (env.BRANCH_NAME == 'python-dramed') {
+      //            echo 'I only execute on this environment $env.BRANCH_NAME'
+      //          } else {
+      //               echo 'I execute elsewhere'
+      //              }
+      //           }
+      stage('checking... maven version ') {
+          steps {
+                  sh "mvn --version"
+                   }
+                }
+
+      // stage(" Maven buld Artifacts Package"){
+      //             def mavenCMD = "${mavenHome}/bin/mvn"
+      //             sh "${mavenCMD} clean package"
+      //           }
+
+     stage('Build maven packages '){
+              steps{
+                    sh "mvn clean package"
+                      }
+                  }
+
+ //      stage('Building Docker Images') {
+ //                steps {
+ //                  sh "sudo chmod 666 /var/run/docker.sock"
+ //                  sh "docker build -t ${REGISTRY}:${VERSION} ."
+ //                     }
+ //                 }
+ //
+ //    stage('Push Docker Image To DockerHub') {
+ //              steps {
+ //                   withCredentials([string(credentialsId: 'eagunuworld_dockerhub_creds', variable: 'eagunuworld_dockerhub_creds')])  {
+ //                   sh "docker login -u eagunuworld -p ${eagunuworld_dockerhub_creds} "
+ //                   }
+ //                 sh 'docker push ${REGISTRY}:${VERSION}'
+ //                }
+ //             }
+ //    stage('Display All Files In Console') {
+ //            steps {
+ //               sh 'ls -lart'
+ //            }
+ //          }
+ //
+ //  stage('Update docker-compose Tag'){
+ //      steps{
+ //          	script{
+ //          				    sh '''final_tag=$(echo $VERSION | tr -d ' ')
+ //          				     echo ${final_tag}test
+ //          				     sed -i "s/BUILD_TAG/$final_tag/g"  docker-compose.yml
+ //          				     '''
+ //          				  }
+ //          			 }
+ //          		}
+ //  stage('Display docker-compose content ') {
+ //        steps {
+ //            sh 'cat docker-compose.yml'
+ //            }
+ //        }
+ //
+ //  stage('Stop And Remove Running Container') {
+ //      steps{
+ //          sshagent(['ec2-user-password-credentials']) {
+ //               sh 'docker ps -f name=springboot -q | xargs --no-run-if-empty docker container stop'
+ //               sh 'docker container ls -a -fname=springboot  -q | xargs -r docker container rm'
+ //               sh 'docker container ls '
+ //                  }
+ //                }
+ //             }
+ //
+ //  stage('Remove All Images Before Deployment') {
+ //        steps{
+ //            sshagent(['ec2-user-password-credentials']) {
+ //              sh 'docker rmi  $(docker images -q)'
+ //                  }
+ //               }
+ //             }
+ //
+ // stage('Deploy On Prod') {
+ //     steps{
+ //       sshagent(['ec2-user-password-credentials']) {
+ //            sh "scp -o StrictHostKeyChecking=no docker-compose.yml ec2-user@18.219.210.241:"
+ //            sh "ssh -o StrictHostKeyChecking=no ec2-user@18.219.210.241 docker-compose up -d"
+ //           }
+ //         }
+ //      }
+ //
+ //  stage('Remove images from Agent Server') {
+ //        steps{
+ //            script {
+ //                sh 'docker rmi  $(docker images -q)'
+ //                  }
+ //              }
+ //            }
+ //
+ //  stage('Remove ps from Agent Server') {
+ //        steps {
+ //              sh 'docker ps -f name=framed -q | xargs --no-run-if-empty docker container stop'
+ //              sh 'docker container ls -a -fname=framed  -q | xargs -r docker container rm'
+ //              sh 'docker container ls '
+ //                }
+ //            }
+
+   }
 }
