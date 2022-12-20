@@ -6,12 +6,12 @@ node {
     }
 
    stage ('build')  {
-    sh "${mvnHome}/bin/mvn  clean package"
+    sh "${mvnHome}/bin/mvn  clean install -f maven-web-app/pom.xml"
     }
 
      stage ('Code Quality scan')  {
        withSonarQubeEnv('sonar_creds') {
-       sh "${mvnHome}/bin/mvn clean package sonar:sonar"
+       sh "${mvnHome}/bin/mvn -f maven-web-app/pom.xml sonar:sonar"
         }
    }
 
@@ -30,7 +30,7 @@ node {
         artifacts: [
             [artifactId: 'maven-web-app',
              classifier: '',
-             file: 'maven-web-app.war',
+             file: 'maven-web-app/target/maven-web-app.war',
              type: 'war']
         ]
      )
