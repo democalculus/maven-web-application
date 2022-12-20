@@ -13,7 +13,7 @@ pipeline{
     // tools{
     //      maven 'maven:3.6.3'
     //       }
-    environment { not working of scripted pipeline
+    environment {
               DEPLOY = "${env.BRANCH_NAME == "python-dramed" || env.BRANCH_NAME == "master" ? "true" : "false"}"
               NAME = "${env.BRANCH_NAME == "python-dramed" ? "example" : "example-staging"}"
               def mvnHome =  tool name: "demo-maven:3.8.6", type: "maven"
