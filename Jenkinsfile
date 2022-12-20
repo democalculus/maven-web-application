@@ -113,41 +113,43 @@ node {
 
 stage ('DEV Deploy')  {
       echo "Deploying To Custom MPM Env "
-     deploy adapters: [tomcat9(credentialsId: 'democalculus-Tom-box_creds_ID', path: '', url: 'http://34.125.253.100:8080/')], contextPath: '/custom-pom-mpm', war: '**/*.war'
+     deploy adapters: [tomcat9(credentialsId: 'democalculus-Tom-box_creds_ID', path: '', url: 'http://34.125.253.100:8080/')], contextPath: '/dev-ployment', war: '**/*.war'
     }
 
 stage ('Slack notification')  {
-    slackSend(channel:'multibranch_notification', message: "Job is successful, here is the info -  Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+    slackSend(channel:'dev-continuous-job', message: "Job is successful In Dev , here is the info -  Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
    }
 
-//    stage ('DEV Approve')  {
-//             echo "Taking approval from DEV Manager for QA Deployment"
-//             timeout(time: 7, unit: 'DAYS') {
-//             input message: 'Do you approve QA Deployment?', submitter: 'admin'
-//             }
-//      }
-//
-// stage ('QA Deploy')  {
-//      echo "deploying into QA Env "
-// deploy adapters: [tomcat9(credentialsId: '4c55fae1-a02d-4b82-ba34-d262176eeb46', path: '', url: 'http://your_tomcat_url:8080')], contextPath: null, war: '**/*.war'
-//
-// }
-//
-//
-//   stage ('QA notify')  {
-//     slackSend(channel:'channel-name', message: "QA Deployment was successful, here is the info -  Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
-//    }
-//
-// stage ('QA Approve')  {
-//     echo "Taking approval from QA manager"
-//     timeout(time: 7, unit: 'DAYS') {
-//         input message: 'Do you want to proceed to PROD Deploy?', submitter: 'admin,manager_userid'
-//   }
-// }
-//
-// stage ('PROD Deploy')  {
-//      echo "deploying into PROD Env "
-// deploy adapters: [tomcat9(credentialsId: '4c55fae1-a02d-4b82-ba34-d262176eeb46', path: '', url: 'http://your_tomcat_url:8080')], contextPath: null, war: '**/*.war'
-//
- // }
+   stage ('DEV Approve')  {
+            echo "Taking approval from DEV Manager for QA Deployment"
+            timeout(time: 7, unit: 'DAYS') {
+            input message: 'Do you approve QA Deployment?', submitter: 'admin'
+            }
+       }
+
+  stage ('QA Deploy')  {
+       echo "Deploying into QA Env "
+       deploy adapters: [tomcat9(credentialsId: 'democalculus-Tom-box_creds_ID', path: '', url: 'http://34.125.253.100:8080/')], contextPath: '/qa-ployment', war: '**/*.war'
+      }
+
+stage ('QA notification')  {
+          slackSend(channel:'qa-testing-validations', message: "Job is successful In Dev , here is the info -  Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+      }
+
+
+stage ('QA Approve')  {
+        echo "Taking approval from QA manager"
+        timeout(time: 7, unit: 'DAYS') {
+        input message: 'Do you want to proceed to PROD Deploy?', submitter: 'admin,manager_userid'
+       }
+    }
+
+stage ('PROD Deploy')  {
+       echo "deploying into PROD Env "
+       deploy adapters: [tomcat9(credentialsId: 'democalculus-Tom-box_creds_ID', path: '', url: 'http://34.125.253.100:8080/')], contextPath: '/prod-ployment', war: '**/*.war'
+     }
+
+  stage ('prod notification')  {
+        slackSend(channel:'prod-deployment-success-test', message: "Job is successful In Dev , here is the info -  Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+      }
 }
