@@ -67,7 +67,7 @@ pipeline{
                           },
 
                 Build: {
-                       sh "mvn clean package"
+                       sh "mvn install -f maven-web-app/pom.xml"
                          }
                      )
                   }
@@ -79,16 +79,16 @@ pipeline{
               }
             }
 
-     stage('Build maven packages '){
-              steps{
-                    sh "mvn clean package"
-                      }
-                  }
+     // stage('Build maven packages '){
+     //          steps{
+     //                sh "mvn install -f maven-web-app/pom.xml"
+     //                  }
+     //              }
 
     stage ('Code Quality scan')  {
                 steps {
                     withSonarQubeEnv('sonar_creds') {
-                      sh "mvn clean package sonar:sonar"
+                      sh "mvn -f maven-web-app/pom.xml sonar:sonar"
                        }
                   }
                 }
@@ -132,7 +132,7 @@ pipeline{
               artifacts: [
                   [artifactId: 'MyWebApp',
                    classifier: '',
-                   file: 'MyWebApp/target/MyWebApp.war',
+                   file: 'maven-web-app/target/maven-web-app.war',
                    type: 'war']
                    ]
                 )
