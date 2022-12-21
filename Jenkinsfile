@@ -139,6 +139,15 @@ pipeline{
              }
           }
 
+  stage('Remove All Images Before Deployment') {
+          steps{
+            sshagent(['ssh-jenkins-connection']) {
+                sh "deploy adapters: [tomcat9(credentialsId: 'democalculus-Tom-box_creds_ID', path: '', url: 'http://34.125.92.205:8080/')], contextPath: 'maven-web-app', war: '**/*.war'"
+                  }
+                }
+            }
+
+
   stage('Building Docker Images') {
           steps {
               sh "docker build -t ${REGISTRY}:${VERSION} ."
