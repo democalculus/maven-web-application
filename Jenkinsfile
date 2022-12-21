@@ -130,7 +130,7 @@ pipeline{
               repository: 'eagunu-mvn-snapshot-mss',
               credentialsId: 'nexus_creds_id',
               artifacts: [
-                  [artifactId: 'MyWebApp',
+                  [artifactId: 'maven-web-app',
                    classifier: '',
                    file: 'maven-web-app/target/maven-web-app.war',
                    type: 'war']
