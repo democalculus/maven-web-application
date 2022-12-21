@@ -22,7 +22,7 @@ node {
         nexusArtifactUploader(
         nexusVersion: 'nexus3',
         protocol: 'http',
-        nexusUrl: '34.125.253.100:8081',
+        nexusUrl: '34.125.231.86:8081',
         groupId: 'custom-pom',
         version: '1.0-SNAPSHOT',
         repository: 'demo-walmart-snapshop',
