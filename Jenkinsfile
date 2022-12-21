@@ -123,7 +123,7 @@ pipeline{
               nexusArtifactUploader(
               nexusVersion: 'nexus3',
               protocol: 'http',
-              nexusUrl: 'http://34.125.231.86:8081',
+              nexusUrl: '10.182.0.3:8081',
               //groupId: 'myGroupId',
               groupId: 'walmart-dev',
               version: '1.0-SNAPSHOT',
