@@ -141,7 +141,7 @@ pipeline{
 
   stage('checking for for target in maven-web-app') {
         steps {
-                sh 'ls -lart maven-web-app'
+                sh 'ls -lart maven-web-app/target'
                   }
               }
 
