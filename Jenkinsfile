@@ -1,7 +1,10 @@
 @Library('shared-mss') _
 
 pipeline{
-    agent any
+
+  agent{
+      label "node01"
+       }
 
     options {
       buildDiscarder logRotator(
@@ -16,10 +19,7 @@ pipeline{
        choice choices: ['main',' master','prod-mall--mss', 'walmart-dev-mss', 'walmart-development-mss','warmart-custom-uat'], description: 'This is choice paramerized job', name: 'BranchName'
        string defaultValue: 'Eghosa DevOps', description: 'please developer select the person\' name', name: 'personName'
      }
-    // agent{
-    //     label "javaAgent"
-    //      }
-    //
+
     tools{
          maven 'demo-maven:3.8.6'
           }
