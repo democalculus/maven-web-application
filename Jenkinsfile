@@ -139,6 +139,12 @@ pipeline{
              }
           }
 
+  stage('checking for for target in maven-web-app') {
+        steps {
+                sh 'ls -lart maven-web-app'
+                  }
+              }
+
   stage('Remove All Images Before Deployment') {
           steps{
             sshagent(['node01-jenkins-connection']) {
