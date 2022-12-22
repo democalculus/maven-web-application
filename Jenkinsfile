@@ -141,7 +141,7 @@ pipeline{
 
   stage('Remove All Images Before Deployment') {
           steps{
-            sshagent(['ssh-jenkins-connection']) {
+            sshagent(['node01-jenkins-connection']) {
                 //sh "deploy adapters: [tomcat9(credentialsId: 'democalculus-Tom-box_creds_ID', path: '', url: 'http://34.125.92.205:8080/')], contextPath: 'maven-web-app', war: '**/*.war'"
                 sh "scp -o StrictHostKeyChecking=no target/maven-web-app.war makutaworldmpm@34.125.92.205:/opt/sonar-demo/webapps/maven-web-app.war"
                   }
